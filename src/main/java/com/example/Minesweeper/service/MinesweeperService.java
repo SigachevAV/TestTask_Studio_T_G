@@ -55,6 +55,10 @@ public class MinesweeperService
     public GameInfoResponse Turn(GameTurnRequest _request) throws MinesweeperException, JsonProcessingException
     {
         Game game = gameRepository.findById(UUID.fromString( _request.getGame_id())).orElseThrow( () ->  new MinesweeperException("Игра не найдена"));
+        if (game.getCompleted())
+        {
+            throw new MinesweeperException("Игра уже закончена");
+        }
         if (_request.getCol() <0 || _request.getCol() > game.getWidth() || _request.getRow() < 0 || _request.getRow() > game.getHeight())
         {
             throw new MinesweeperException("Неверные координаты");
