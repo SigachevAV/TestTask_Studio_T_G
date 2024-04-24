@@ -22,14 +22,14 @@ public class MinesweeperController {
     @PostMapping("/new")
     public GameInfoResponse newGame(@RequestBody NewGameRequest request) throws MinesweeperException, JsonProcessingException
     {
-        log.atInfo().log("zapros");
+        log.atInfo().log("New game request");
         return minesweeperService.NewGame(request);
     }
 
     @CrossOrigin
     @PostMapping("/turn")
     public GameInfoResponse makeTurn(@RequestBody GameTurnRequest request) throws MinesweeperException, JsonProcessingException {
-        log.atInfo().log("zapros");
+        log.atInfo().log("New turn request");
         return minesweeperService.Turn(request);
     }
 }

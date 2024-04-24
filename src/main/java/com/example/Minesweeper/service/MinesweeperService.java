@@ -13,7 +13,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.apache.commons.lang3.SerializationUtils;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.UUID;
@@ -64,17 +63,20 @@ public class MinesweeperService
         boolean digResult = filed.Dig(_request.getRow(), _request.getCol());
         game.setMap(objectMapper.writeValueAsString(filed));
         GameInfoResponse result;
+        log.atInfo().log("Maked turn in game witn id=" + game.getId());
         if (IsComplited(filed) || digResult)
         {
             game.setCompleted(true);
             gameRepository.save(game);
             result = GameInfoResponseFactory(game, !digResult, true);
+            log.atInfo().log("ended game with id=" + game.getId());
         }
         else
         {
             result= GameInfoResponseFactory(game, false, false);
         }
         gameRepository.save(game);
+
         return result;
     }
 
@@ -143,6 +145,7 @@ public class MinesweeperService
                 .map(objectMapper.writeValueAsString(new Filed(field)))
                 .build();
         gameRepository.save(game);
+        log.atInfo().log("Created game witn id=" + game.getId());
         return GameInfoResponseFactory(game, false, false);
      }
 
